@@ -69,52 +69,90 @@ document.addEventListener("DOMContentLoaded", function () {
   highlightActiveNavLink();
 });
 
-
-// Cursor Animation Function
 function initCursorAnimation() {
-    // Create cursor elements
-    const cursorDot = document.createElement('div');
-    cursorDot.classList.add('cursor-dot');
-    document.body.appendChild(cursorDot);
-    
-    const cursorOutline = document.createElement('div');
-    cursorOutline.classList.add('cursor-outline');
-    document.body.appendChild(cursorOutline);
-    
-    // Track mouse movement
-    document.addEventListener('mousemove', (e) => {
-        cursorDot.style.left = `${e.clientX}px`;
-        cursorDot.style.top = `${e.clientY}px`;
-        
-        cursorOutline.style.left = `${e.clientX}px`;
-        cursorOutline.style.top = `${e.clientY}px`;
+  // Create royal cursor container
+  const royalCursor = document.createElement("div");
+  royalCursor.classList.add("royal-cursor");
+
+  // Create cursor elements
+  const cursorCore = document.createElement("div");
+  cursorCore.classList.add("cursor-core");
+
+  const cursorCrown = document.createElement("div");
+  cursorCrown.classList.add("cursor-effect", "cursor-crown");
+
+  const cursorSparkle = document.createElement("div");
+  cursorSparkle.classList.add("cursor-effect", "cursor-sparkle");
+
+  // Assemble cursor
+  royalCursor.appendChild(cursorCore);
+  royalCursor.appendChild(cursorCrown);
+  royalCursor.appendChild(cursorSparkle);
+  document.body.appendChild(royalCursor);
+
+  // Track mouse movement with smoother follow
+  let posX = 0,
+    posY = 0;
+  let mouseX = 0,
+    mouseY = 0;
+
+  const updateCursor = () => {
+    posX += (mouseX - posX) / 6;
+    posY += (mouseY - posY) / 6;
+
+    royalCursor.style.left = `${posX}px`;
+    royalCursor.style.top = `${posY}px`;
+
+    requestAnimationFrame(updateCursor);
+  };
+
+  updateCursor();
+
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  // Add special effects to interactive elements
+  const interactiveElements = document.querySelectorAll(
+    'a, button, .nav-link, input[type="submit"], input[type="button"], .program-card, .trainer-card'
+  );
+
+  interactiveElements.forEach((element) => {
+    element.addEventListener("mouseenter", () => {
+      royalCursor.style.width = "40px";
+      royalCursor.style.height = "40px";
     });
-    
-    // Add hover effects to interactive elements
-    const interactiveElements = document.querySelectorAll(
-        'a, button, .nav-link, input[type="submit"], input[type="button"], .program-card'
-    );
-    
-    interactiveElements.forEach(element => {
-        element.addEventListener('mouseenter', () => {
-            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
-            cursorOutline.style.borderColor = 'var(--crimson)';
-            cursorOutline.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
-        });
-        
-        element.addEventListener('mouseleave', () => {
-            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
-            cursorOutline.style.borderColor = 'var(--gold)';
-            cursorOutline.style.backgroundColor = 'transparent';
-        });
+
+    element.addEventListener("mouseleave", () => {
+      royalCursor.style.width = "24px";
+      royalCursor.style.height = "24px";
     });
-    
-    // Hide cursor on touch devices
-    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    if (isTouchDevice) {
-        cursorDot.style.display = 'none';
-        cursorOutline.style.display = 'none';
-    }
+  });
+
+  // Special effect for CTA buttons
+  const ctaButtons = document.querySelectorAll(".cta-button");
+  ctaButtons.forEach((button) => {
+    button.addEventListener("mouseenter", () => {
+      cursorSparkle.style.opacity = "0.8";
+    });
+
+    button.addEventListener("mouseleave", () => {
+      cursorSparkle.style.opacity = "0";
+    });
+  });
+
+  // Special effect for navigation links
+  const navLinks = document.querySelectorAll(".nav-link");
+  navLinks.forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      cursorCrown.style.opacity = "1";
+    });
+
+    link.addEventListener("mouseleave", () => {
+      cursorCrown.style.opacity = "0";
+    });
+  });
 }
 
 // Highlight active nav link based on scroll position
