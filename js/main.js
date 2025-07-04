@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const menuToggle = document.getElementById("mobile-menu");
   const navMenu = document.querySelector(".nav-menu");
+  initCursorAnimation();
 
   menuToggle.addEventListener("click", function () {
     this.classList.toggle("active");
@@ -67,6 +68,54 @@ document.addEventListener("DOMContentLoaded", function () {
   // Highlight active nav link on scroll
   highlightActiveNavLink();
 });
+
+
+// Cursor Animation Function
+function initCursorAnimation() {
+    // Create cursor elements
+    const cursorDot = document.createElement('div');
+    cursorDot.classList.add('cursor-dot');
+    document.body.appendChild(cursorDot);
+    
+    const cursorOutline = document.createElement('div');
+    cursorOutline.classList.add('cursor-outline');
+    document.body.appendChild(cursorOutline);
+    
+    // Track mouse movement
+    document.addEventListener('mousemove', (e) => {
+        cursorDot.style.left = `${e.clientX}px`;
+        cursorDot.style.top = `${e.clientY}px`;
+        
+        cursorOutline.style.left = `${e.clientX}px`;
+        cursorOutline.style.top = `${e.clientY}px`;
+    });
+    
+    // Add hover effects to interactive elements
+    const interactiveElements = document.querySelectorAll(
+        'a, button, .nav-link, input[type="submit"], input[type="button"], .program-card'
+    );
+    
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            cursorOutline.style.borderColor = 'var(--crimson)';
+            cursorOutline.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursorOutline.style.borderColor = 'var(--gold)';
+            cursorOutline.style.backgroundColor = 'transparent';
+        });
+    });
+    
+    // Hide cursor on touch devices
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchDevice) {
+        cursorDot.style.display = 'none';
+        cursorOutline.style.display = 'none';
+    }
+}
 
 // Highlight active nav link based on scroll position
 function highlightActiveNavLink() {

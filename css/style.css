@@ -1005,3 +1005,91 @@ ul {
         font-size: 1rem;
     }
 }
+/* Royal Cursor Animation Styles */
+.royal-cursor {
+    width: 24px;
+    height: 24px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: 
+        transform 0.15s ease-out,
+        width 0.3s ease,
+        height 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cursor-core {
+    width: 8px;
+    height: 8px;
+    background-color: var(--gold);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.cursor-effect {
+    position: absolute;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+/* Crown effect for hover states */
+.cursor-crown {
+    width: 30px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><path fill="%23FFD700" d="M15 0l4.9 8.2L30 5l-5 15H5L0 5l10.1 3.2z"/></svg>');
+    background-repeat: no-repeat;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Sparkle effect */
+.cursor-sparkle {
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%23FFD700" d="M8 0l2 4 4 2-4 2-2 4-2-4-4-2 4-2z"/></svg>');
+    background-repeat: no-repeat;
+    animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1.5) rotate(20deg); opacity: 0.8; }
+}
+
+/* Interactive element effects */
+a:hover ~ .royal-cursor .cursor-core,
+button:hover ~ .royal-cursor .cursor-core,
+.nav-link:hover ~ .royal-cursor .cursor-core {
+    transform: scale(1.5);
+    background-color: var(--crimson);
+}
+
+a:hover ~ .royal-cursor .cursor-crown,
+button:hover ~ .royal-cursor .cursor-crown,
+.nav-link:hover ~ .royal-cursor .cursor-crown {
+    opacity: 1;
+    animation: crownBounce 0.5s ease;
+}
+
+.cta-button:hover ~ .royal-cursor .cursor-sparkle {
+    opacity: 0.8;
+}
+
+@keyframes crownBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* Hide on touch devices */
+@media (hover: none) {
+    .royal-cursor {
+        display: none;
+    }
+}
